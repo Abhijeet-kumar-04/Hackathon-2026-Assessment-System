@@ -32,9 +32,7 @@ Object.entries(services).forEach(([name, target]) => {
   app.use(`/api/v1/${name}`, createProxyMiddleware({
     target,
     changeOrigin: true,
-    pathRewrite: {
-      [`^/api/v1/${name}`]: `/api/v1/${name}`,
-    },
+    pathRewrite: (path, req) => req.originalUrl,
   }));
 });
 
