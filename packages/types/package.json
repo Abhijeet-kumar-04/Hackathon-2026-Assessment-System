@@ -1,0 +1,5 @@
+{
+    "main":  "src/index.ts",
+    "name":  "@hackathon/types",
+    "version":  "1.0.0"
+}

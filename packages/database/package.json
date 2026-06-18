@@ -1,0 +1,8 @@
+{
+    "main": "src/index.ts",
+    "name": "@hackathon/database",
+    "version": "1.0.0",
+    "dependencies": {
+        "mongoose": "^9.7.1"
+    }
+}

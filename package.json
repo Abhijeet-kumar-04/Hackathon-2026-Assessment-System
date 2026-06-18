@@ -1,0 +1,23 @@
+{
+  "name": "hackathon-system-microservices",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "npm@10.0.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "services/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "concurrently \"npm run dev -w services/api-gateway\" \"npm run dev -w services/user-service\" \"npm run dev -w services/hackathon-service\" \"npm run dev -w services/team-service\" \"npm run dev -w services/submission-service\" \"npm run dev -w services/judging-service\" \"npm run dev -w apps/client-frontend\" \"npm run dev -w apps/admin-frontend\" \"npm run dev -w apps/judge-frontend\"",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.3",
+    "prettier": "^3.0.0",
+    "tsx": "^4.22.4",
+    "turbo": "^2.0.0"
+  }
+}
