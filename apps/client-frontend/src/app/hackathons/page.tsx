@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { HackathonCard } from '@/components/HackathonCard';
-import { Code2, Search, Loader2 } from 'lucide-react';
+import { Hexagon, Search, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { UserButton, useAuth, SignInButton } from '@clerk/nextjs';
 
@@ -33,15 +33,15 @@ export default function HackathonsPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-950">
-      {/* Background gradients */}
-      <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900/20 via-slate-950 to-slate-950 pointer-events-none" />
+    <div className="min-h-screen bg-slate-50 font-sans">
+      {/* Light Theme Background gradients */}
+      <div className="fixed inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-50 via-slate-50 to-white pointer-events-none" />
 
       {/* Navbar */}
-      <nav className="flex items-center justify-between p-6 lg:px-12 backdrop-blur-md border-b border-white/5 sticky top-0 z-50 bg-slate-950/50">
+      <nav className="flex items-center justify-between p-6 lg:px-12 backdrop-blur-md bg-white/60 border-b border-slate-200 sticky top-0 z-50">
         <Link href="/" className="flex items-center gap-2">
-          <Code2 className="w-8 h-8 text-indigo-400" />
-          <span className="text-xl font-bold tracking-tight text-white">HackHub</span>
+          <Hexagon className="w-8 h-8 text-indigo-600 fill-indigo-100" />
+          <span className="text-xl font-bold tracking-tight text-slate-900">HackSphere</span>
         </Link>
         
         <div className="flex items-center gap-6">
@@ -71,15 +71,15 @@ export default function HackathonsPage() {
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-5xl font-bold text-white mb-4"
+            className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4"
           >
-            Discover <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-fuchsia-400">Hackathons</span>
+            Discover <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Hackathons</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-slate-400 text-lg"
+            className="text-slate-600 text-lg"
           >
             Find the perfect opportunity to build, learn, and win. Compete with the best developers from around the world.
           </motion.p>
@@ -97,29 +97,29 @@ export default function HackathonsPage() {
             <input 
               type="text" 
               placeholder="Search hackathons..." 
-              className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+              className="w-full bg-white border border-slate-200 rounded-xl py-3 pl-12 pr-4 text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all shadow-sm"
             />
           </div>
-          <select className="bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all appearance-none cursor-pointer">
-            <option value="all" className="bg-slate-900">All Formats</option>
-            <option value="online" className="bg-slate-900">Online</option>
-            <option value="offline" className="bg-slate-900">In-Person</option>
-            <option value="hybrid" className="bg-slate-900">Hybrid</option>
+          <select className="bg-white border border-slate-200 rounded-xl py-3 px-4 text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all appearance-none cursor-pointer shadow-sm">
+            <option value="all" className="bg-white">All Formats</option>
+            <option value="online" className="bg-white">Online</option>
+            <option value="offline" className="bg-white">In-Person</option>
+            <option value="hybrid" className="bg-white">Hybrid</option>
           </select>
         </motion.div>
 
         {/* Loading State */}
         {loading && (
-          <div className="flex flex-col items-center justify-center py-20 text-slate-400">
-            <Loader2 className="w-8 h-8 animate-spin text-indigo-500 mb-4" />
-            <p>Loading epic hackathons...</p>
+          <div className="flex flex-col items-center justify-center py-20 text-slate-500">
+            <Loader2 className="w-8 h-8 animate-spin text-indigo-600 mb-4" />
+            <p className="font-medium">Loading epic hackathons...</p>
           </div>
         )}
 
         {/* Error State */}
         {error && !loading && (
-          <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-6 rounded-xl text-center">
-            <p>{error}</p>
+          <div className="bg-red-50 border border-red-100 text-red-600 p-6 rounded-xl text-center shadow-sm">
+            <p className="font-medium">{error}</p>
           </div>
         )}
 

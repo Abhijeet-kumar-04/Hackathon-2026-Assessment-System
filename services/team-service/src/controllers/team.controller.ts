@@ -14,6 +14,13 @@ export const createTeam = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
+    // Lookup user by clerkId
+    const user = await User.findOne({ clerkId: userId });
+    if (!user) {
+      return res.status(404).json({ error: 'User profile not found. Please complete registration.' });
+    }
+    const mongoUserId = user._id;
+
     // Check if team name already exists
     const existingTeam = await Team.findOne({ teamName, hackathonId });
     if (existingTeam) {
@@ -21,7 +28,7 @@ export const createTeam = async (req: Request, res: Response) => {
     }
 
     // Check if user is already in a team for this hackathon
-    const userInTeam = await Team.findOne({ hackathonId, 'members.userId': userId });
+    const userInTeam = await Team.findOne({ hackathonId, 'members.userId': mongoUserId });
     if (userInTeam) {
       return res.status(400).json({ error: 'You are already in a team for this hackathon' });
     }
@@ -29,8 +36,8 @@ export const createTeam = async (req: Request, res: Response) => {
     const team = new Team({
       teamName,
       hackathonId,
-      leader: userId,
-      members: [{ userId, role: 'LEADER' }],
+      leader: mongoUserId,
+      members: [{ userId: mongoUserId, role: 'LEADER' }],
       teamCode: generateTeamCode(),
       status: 'INCOMPLETE'
     });
@@ -51,20 +58,32 @@ export const joinTeam = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Missing teamCode or userId' });
     }
 
+    // Lookup user by clerkId
+    const user = await User.findOne({ clerkId: userId });
+    if (!user) {
+      return res.status(404).json({ error: 'User profile not found. Please complete registration.' });
+    }
+    const mongoUserId = user._id;
+
     const team = await Team.findOne({ teamCode });
     if (!team) {
       return res.status(404).json({ error: 'Invalid team code' });
     }
 
     // Check if user is already in this team
-    const isMember = team.members.find(m => m.userId.toString() === userId);
+    const isMember = team.members.find(m => m.userId.toString() === mongoUserId.toString());
     if (isMember) {
       return res.status(400).json({ error: 'You are already in this team' });
     }
 
-    // Optional: We would also check hackathon maxTeamSize here by querying Hackathon model
+    // Check if user is already in ANOTHER team for this hackathon
+    const userInTeam = await Team.findOne({ hackathonId: team.hackathonId, 'members.userId': mongoUserId });
+    if (userInTeam) {
+      return res.status(400).json({ error: 'You are already in a team for this hackathon' });
+    }
+
     // For now, add user to team
-    team.members.push({ userId, role: 'MEMBER', joinedAt: new Date() });
+    team.members.push({ userId: mongoUserId, role: 'MEMBER', joinedAt: new Date() });
     
     // Update status if it meets requirements (simplified logic)
     if (team.members.length >= 2) {
